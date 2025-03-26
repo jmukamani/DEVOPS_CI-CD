@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: python-build-task
+spec:
+  steps:
+    - name: build
+      image: docker
+      script: |
+        docker build -t devops-app .
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: python-test-task
+spec:
+  steps:
+    - name: test
+      image: python:3.9
+      script: |
+        pip install -r requirements.txt
+        pip install nose
+        nosetests app/test_app.py
